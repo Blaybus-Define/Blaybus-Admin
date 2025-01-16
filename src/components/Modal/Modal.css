@@ -1,0 +1,32 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  visibility: hidden;
+  z-index: 100;
+}
+.modal-overlay.show {
+  visibility: visible;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 101px;
+  background-color: white;
+  border-radius: 10px;
+  visibility: hidden;
+  box-shadow: 0px 1px 5px rgba(35, 35, 35, 0.174);
+  z-index: 101;
+}
+
+.modal-content.show {
+  visibility: visible;
+}
