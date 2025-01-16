@@ -117,11 +117,28 @@ input {
   margin-top: 20px;
 }
 
-.Pagination button {
+.Pagination span {
   margin: 0 5px;
   padding: 10px 15px;
   background: #ff5c35;
   border: none;
   color: #fff;
   border-radius: 8px;
+}
+
+.Pagination button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+
+  /* 텍스트 스타일 */
+  color: #9E9E9E;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
 }

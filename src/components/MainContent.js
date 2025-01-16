@@ -142,7 +142,7 @@ const MainContent = () => {
       </div>
       <div className="Pagination">
         <button>이전</button>
-        <button>1</button>
+        <span> 1 </span>
         <button>다음</button>
       </div>
       <Modal
