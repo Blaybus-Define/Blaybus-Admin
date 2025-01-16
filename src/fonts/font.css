@@ -1,0 +1,118 @@
+/* 폰트 정의 */
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  src: url("./Pretendard-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  src: url("./Pretendard-Regular.woff") format("woff");
+}
+
+/* 디자인 시스템 */
+:root {
+  --font-family-pretendard: "Pretendard";
+  --font-weight-bold: 700;
+  --font-weight-regular: 400;
+}
+h1 {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 48px;
+}
+h2 {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 42px;
+}
+h3 {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 34px;
+}
+h4 {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 26px;
+}
+.title-1-bold {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 24px;
+}
+.title-1-regular {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 24px;
+}
+.title-2-bold {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 20px;
+}
+.title-2-regular {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 20px;
+}
+.title-3-bold {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 18px;
+}
+.title-3-regular {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 18px;
+}
+.subtitle-1-bold {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 16px;
+}
+.subtitle-1-regular {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 16px;
+}
+.subtitle-2-bold {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 14px;
+}
+.subtitle-2-regular {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 14px;
+}
+.Body-1-b {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 16px;
+}
+.Body-1-r {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 16px;
+}
+.Body-2-b {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 14px;
+}
+.body-2-r {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 14px;
+}
+.label-1-b {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-bold);
+  font-size: 12px;
+}
+.label-1-r {
+  font-family: var(--font-family-pretendard);
+  font-weight: var(--font-weight-regular);
+  font-size: 12px;
+}

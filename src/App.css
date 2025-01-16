@@ -9,16 +9,25 @@ body {
   height: 100vh;
 }
 
+input {
+  border: 0;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
 .Header {
   display: flex;
   width: 1920px;
   height: 70px;
   flex-shrink: 0;
   align-items: center;
-  background: #FFF;
+  background: #fff;
   box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.15);
   padding: 20px 50px;
   box-shadow: 0px 1px 16px #00000026;
+  z-index: 10;
 }
 
 .Header-logo {
@@ -34,7 +43,6 @@ body {
   font-weight: 700;
   color: var(--Foundation-Gray-gray-900, #212124);
   line-height: normal;
-  
 }
 
 .MainContent {
@@ -49,7 +57,7 @@ body {
   gap: 64px;
 }
 .Search-label {
-  color: var(--Foundation-Gray-gray-600, #868B94);
+  color: var(--Foundation-Gray-gray-600, #868b94);
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
@@ -60,9 +68,8 @@ body {
   color: #868b94;
   font-size: 14px;
   font-weight: bold;
-  
 }
-.Content-header-label{
+.Content-header-label {
   flex: 1 0 0;
   color: var(--Foundation-Gray-gray-900, #212124);
   font-size: 14px;
