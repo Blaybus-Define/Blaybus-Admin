@@ -11,21 +11,50 @@ const AddContentRow = ({ loginId, type, setAddRowVisible }) => {
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [maxMedium, setMaxMedium] = useState("");
-  const [grade, setGrade] = useState("");
+  const [experience, setExperience] = useState("");
+
+  const typeMapper = {
+    리더부여: "LEADER_ASSIGNMENT",
+    직무별: "TASK",
+    인사평가: "PERFORMANCE_EVALUATION",
+    "전사 프로젝트": "CORPORATE_PROJECT",
+  };
 
   const handleExperiencePost = async () => {
-    if (detailType === "인사평가") {
-      setDetailType("PERFORMANCE_EVALUATION");
-    }
     try {
-      const { data } = await customAxios.post("admin/quest/experience", {
+      const response = await customAxios.post("admin/quest/experience", {
         loginId: loginId,
-        type: "PERFORMANCE_EVALUATION",
-        title: "Monthly Overtime",
-        description: "5 times",
-        date: "2025-01-16",
-        experience: 2000,
+        type: typeMapper[detailType],
+        title: item,
+        description: notes,
+        date: `${year}-${month}-${day}`,
+        experience: experience,
       });
+      console.log("Post experience: ", response);
+    } catch (error) {
+      console.err("Post experience: ", error);
+    }
+  };
+
+  const handleQuestPost = async () => {
+    try {
+      const input = maxMedium;
+      const parts = input.split("/");
+
+      const maxNum = parseInt(parts[0], 10);
+      const MediumNum = parseInt(parts[1], 10);
+      console.log(maxNum, MediumNum);
+
+      const response = await customAxios.post("admin/quest/", {
+        loginId: loginId,
+        type: typeMapper[detailType],
+        title: item,
+        description: notes,
+        date: `${year}-${month}-${day}`,
+        maxCriterionExperience: maxNum,
+        mediumCriterionExperience: MediumNum,
+      });
+      console.log("Post experience: ", response);
     } catch (error) {
       console.err("Post experience: ", error);
     }
@@ -97,7 +126,7 @@ const AddContentRow = ({ loginId, type, setAddRowVisible }) => {
               }}
               style={styles.input}
             />
-            일
+            주
           </div>
           {/* 경험치, 달성정도 */}
           <div style={styles.item} />
@@ -119,7 +148,7 @@ const AddContentRow = ({ loginId, type, setAddRowVisible }) => {
           <div style={{ ...styles.item, justifyContent: "center" }}>
             <PressableButton
               onClick={() => {
-                // 퀘스트 완료 로직
+                handleQuestPost();
                 setAddRowVisible(null);
                 console.log("aa");
               }}
@@ -180,39 +209,65 @@ const AddContentRow = ({ loginId, type, setAddRowVisible }) => {
           {/* 주기 */}
           <div style={{ ...styles.item }} />
           {/* 경험치 */}
-          <div style={styles.item} />
-          {/* 달성 정도 */}
           <div style={styles.item}>
             <input
-              placeholder="S-D 등급"
-              value={grade}
+              placeholder="ex)3000"
+              value={experience}
               onChange={(e) => {
-                setGrade(e.target.value);
+                setExperience(e.target.value);
               }}
               style={styles.input}
             />
           </div>
+          {/* 달성 정도 */}
+          <div style={styles.item}></div>
           {/* MAX/MEDIUM */}
           <div style={styles.item} />
           {/* 부여날짜 */}
-          <div style={styles.item} />
+          <div style={{ ...styles.item, padding: 0 }}>
+            <input
+              placeholder="YYYY"
+              value={year}
+              onChange={(e) => {
+                setYear(e.target.value);
+              }}
+              style={styles.input}
+            />
+            년
+            <input
+              placeholder="MM"
+              value={month}
+              onChange={(e) => {
+                setMonth(e.target.value);
+              }}
+              style={styles.input}
+            />
+            월
+            <input
+              placeholder="DD"
+              value={day}
+              onChange={(e) => {
+                setDay(e.target.value);
+              }}
+              style={styles.input}
+            />
+            일
+          </div>
           {/* 완료 */}
           <div style={{ ...styles.item, justifyContent: "center" }}>
             <PressableButton
               onClick={() => {
-                // 경험치 완료 로직
+                handleExperiencePost();
                 setAddRowVisible(null);
                 console.log("addRowVisible 상태가 null로 변경되었습니다");
               }}
               style={{
                 ...styles.button,
                 backgroundColor:
-                  detailType && item && grade
-                    ? colors.orange[500]
-                    : colors.gray[400],
+                  detailType && item ? colors.orange[500] : colors.gray[400],
               }}
               pressedStyle={{ backgroundColor: colors.orange[600] }}
-              disabled={!(detailType && item && grade)}
+              disabled={!(detailType && item)}
             >
               <span className="label-1-b" style={{ color: "#FFF" }}>
                 완료하기

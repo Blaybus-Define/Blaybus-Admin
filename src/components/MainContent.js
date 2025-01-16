@@ -213,6 +213,7 @@ const MainContent = () => {
         {allData.map((data, index) => {
           return (
             <NormalContentRow
+              key={index}
               setAchieveModalVisible={setAchieveModalVisible}
               achieveModalVisible={achieveModalVisible}
               selectedAchievement={selectedAchievement}

@@ -26,20 +26,21 @@ const NormalContentRow = ({
     PERFORMANCE_EVALUATION: "인사평가",
     CORPORATE_PROJECT: "전사 프로젝트",
   };
+  const [grade, setGrade] = useState("");
 
   const buttonRef = useRef(null);
 
-  const handleButtonClick = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect(); // 버튼 위치 계산
-      setButtonPosition({
-        bottom: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        height: rect.height,
-      });
-    }
-    setAchieveModalVisible(!achieveModalVisible);
-  };
+  // const handleButtonClick = () => {
+  //   if (buttonRef.current) {
+  //     const rect = buttonRef.current.getBoundingClientRect(); // 버튼 위치 계산
+  //     setButtonPosition({
+  //       bottom: rect.bottom + window.scrollY,
+  //       left: rect.left + window.scrollX,
+  //       height: rect.height,
+  //     });
+  //   }
+  //   setAchieveModalVisible(!achieveModalVisible);
+  // };
 
   const handlePutQuest = async () => {
     try {
@@ -70,27 +71,17 @@ const NormalContentRow = ({
             {isComplete ? (
               <span>{progress}</span>
             ) : (
-              <PressableButton
-                ref={buttonRef}
-                onClick={handleButtonClick}
-                style={styles.item}
-                pressedStyle={{ opacity: 0.5 }}
-              >
-                <span
-                  style={
-                    selectedAchievement
-                      ? { color: colors.orange[500] }
-                      : { color: colors.gray[900] }
-                  }
-                >
-                  {selectedAchievement ? selectedAchievement : "달성 정도 선택"}
-                </span>
-                <img
-                  src={Down}
-                  alt="down"
-                  style={{ width: 8, marginLeft: 7 }}
-                />
-              </PressableButton>
+              <input
+                placeholder="ex.MAX"
+                value={grade}
+                onChange={(e) => {
+                  setGrade(e.target.value);
+                }}
+                style={{
+                  borderRadius: 6,
+                  border: `1px solid ${colors.orange[50]}`,
+                }}
+              />
             )}
           </div>
           <div style={styles.item}>-</div>
