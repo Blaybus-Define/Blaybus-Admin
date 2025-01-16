@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import PressableButton from "./PressableButton";
 import colors from "../colors/colors";
+import { customAxios } from "../customAxios";
 
-const AddContentRow = ({ type, setAddRowVisible }) => {
+const AddContentRow = ({ loginId, type, setAddRowVisible }) => {
   const [detailType, setDetailType] = useState("");
   const [item, setItem] = useState("");
   const [notes, setNotes] = useState("");
@@ -11,6 +12,24 @@ const AddContentRow = ({ type, setAddRowVisible }) => {
   const [day, setDay] = useState("");
   const [maxMedium, setMaxMedium] = useState("");
   const [grade, setGrade] = useState("");
+
+  const handleExperiencePost = async () => {
+    if (detailType === "인사평가") {
+      setDetailType("PERFORMANCE_EVALUATION");
+    }
+    try {
+      const { data } = await customAxios.post("admin/quest/experience", {
+        loginId: loginId,
+        type: "PERFORMANCE_EVALUATION",
+        title: "Monthly Overtime",
+        description: "5 times",
+        date: "2025-01-16",
+        experience: 2000,
+      });
+    } catch (error) {
+      console.err("Post experience: ", error);
+    }
+  };
 
   return (
     <div style={{ display: "flex", width: "100%" }}>

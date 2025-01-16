@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import PressableButton from "./PressableButton";
 import Down from "../icon/dropdown.svg";
 import colors from "../colors/colors";
+import { customAxios } from "../customAxios";
 
 const NormalContentRow = ({
   setAchieveModalVisible,
@@ -10,19 +11,21 @@ const NormalContentRow = ({
   setButtonPosition,
   isComplete,
   type,
+  detailType,
+  title,
+  description,
+  date,
+  experience,
+  progress,
+  assignedDate,
+  memberQuestId,
 }) => {
-  // 나중에 위에 매개변수로 받아올 애들
-  const getQuestAchieve = null;
-  // const type = "quest";
-  const detailType = "";
-  const 항목 = "";
-  const 비고 = "";
-  const 주기 = "";
-  const 경험치 = "";
-  const 달성정도 = "MAX";
-  const minMax = "";
-  const 부여날짜 = "";
-  // const isComplete = false; // 완료 여부
+  const typeMapper = {
+    LEADER_ASSIGNMENT: "리더부여",
+    TASK: "직무별",
+    PERFORMANCE_EVALUATION: "인사평가",
+    CORPORATE_PROJECT: "전사 프로젝트",
+  };
 
   const buttonRef = useRef(null);
 
@@ -38,22 +41,34 @@ const NormalContentRow = ({
     setAchieveModalVisible(!achieveModalVisible);
   };
 
+  const handlePutQuest = async () => {
+    try {
+      const response = await customAxios.put("admin/quest/approve", {
+        memberQuestId: memberQuestId,
+        achievementLevel: selectedAchievement,
+      });
+      console.log("Put quest: ", response);
+    } catch (error) {
+      console.err("Put quest: ", error);
+    }
+  };
+
   return (
     <div style={{ display: "flex", width: "100%" }}>
       {type === "quest" ? (
         // quest
         <div className="body-2-r" style={styles.contentContainer}>
           <div style={{ ...styles.item, justifyContent: "center" }}>
-            리더부여
+            {typeMapper[detailType]}
           </div>
-          <div style={styles.item}>월특근</div>
-          <div style={styles.item}>5회</div>
-          <div style={styles.item}>2025년 1월 1주차</div>
-          <div style={styles.item}>2000</div>
+          <div style={styles.item}>{title ? title : "-"}</div>
+          <div style={styles.item}>{description ? description : "-"}</div>
+          <div style={styles.item}>{date ? date : "-"}</div>
+          <div style={styles.item}>{experience ? experience : "-"}</div>
           {/* 달성 정보 유무에 따라 다르게 */}
           <div style={styles.item}>
             {isComplete ? (
-              <span>{달성정도}</span>
+              <span>{progress}</span>
             ) : (
               <PressableButton
                 ref={buttonRef}
@@ -78,16 +93,14 @@ const NormalContentRow = ({
               </PressableButton>
             )}
           </div>
-          <div style={styles.item}>80/40</div>
-          <div style={styles.item}>2025-01-15</div>
+          <div style={styles.item}>-</div>
+          <div style={styles.item}>{assignedDate ? assignedDate : "-"}</div>
           <div style={{ ...styles.item, justifyContent: "center" }}>
             {isComplete ? (
               "완료"
             ) : selectedAchievement ? (
               <PressableButton
-                onClick={() => {
-                  // 퀘스트 완료 로직
-                }}
+                onClick={handlePutQuest}
                 style={{
                   ...styles.button,
                   backgroundColor: colors.orange[500],
@@ -107,16 +120,16 @@ const NormalContentRow = ({
         // experience
         <div className="body-2-r" style={styles.contentContainer}>
           <div style={{ ...styles.item, justifyContent: "center" }}>
-            리더부여
+            {typeMapper[detailType]}
           </div>
-          <div style={styles.item}>월특근</div>
-          <div style={styles.item}>5회</div>
-          <div style={styles.item}>2025년 1월 1주차</div>
-          <div style={styles.item}>2000</div>
+          <div style={styles.item}>{title ? title : "-"}</div>
+          <div style={styles.item}>-</div>
+          <div style={styles.item}>{date ? date : "-"}</div>
+          <div style={styles.item}>{experience ? experience : "-"}</div>
           {/* 달성 정보 유무에 따라 다르게 */}
-          <div style={styles.item}>MAX</div>
-          <div style={styles.item}>80/40</div>
-          <div style={styles.item}>2025-01-15</div>
+          <div style={styles.item}>{description ? description : "-"}</div>
+          <div style={styles.item}>-</div>
+          <div style={styles.item}>{assignedDate ? assignedDate : "-"}</div>
           <div style={{ ...styles.item, justifyContent: "center" }}>-</div>
         </div>
       )}

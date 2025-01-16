@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
 import Add from "../icon/add.svg";
 import colors from "../colors/colors";
 import Modal from "./Modal/Modal";
 import NormalContentRow from "./NormalContentRow";
 import AddContentRow from "./AddContentRow";
+import { customAxios } from "../customAxios";
 
 const MainContent = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [loginId, setLoginId] = useState("");
+  // user Info
+  const [name, setName] = useState("");
+  const [employeeNumber, setEmployNumber] = useState("");
+  const [department, setDepartment] = useState("");
+  const [jobGroup, setJobGroup] = useState("");
+  // content
+  const [quests, setQuests] = useState([]);
+  const [experiences, setExperiences] = useState([]);
+  const [allData, setAllData] = useState([]);
+
+  // "type": "TASK",
+  // "title": "월별 퀘스트",
+  // "description": "Achieve the monthly sales target set by the department.",
+  // "date": "2025-03-01",
+  // "experience": 0,
+  // "progress": "NOT_ACHIEVED",
+  // "assignedDate": null,
+  // "completed": false
 
   // Button
   const [addRowVisible, setAddRowVisible] = useState(null);
@@ -33,8 +52,70 @@ const MainContent = () => {
   };
 
   const handleSearch = () => {
-    alert(`검색: ${searchQuery}`);
+    setAllData([]);
+    getQuest();
+    getExperience();
+    getUserInfo();
   };
+
+  const getQuest = async () => {
+    try {
+      const { data } = await customAxios.get("/admin/quest/member", {
+        params: { loginId: loginId },
+      });
+      setAllData((prev) => {
+        const updatedData = [
+          ...new Set([...prev, ...data.memberExperienceQuest]),
+        ];
+        return updatedData;
+      });
+    } catch (error) {
+      console.log("GET quest: ", error);
+    }
+  };
+  const getExperience = async () => {
+    try {
+      const { data } = await customAxios.get("/admin/quest/experience", {
+        params: { loginId: loginId },
+      });
+      setAllData((prev) => {
+        const updatedData = [
+          ...new Set([...prev, ...data.memberExperienceQuest]),
+        ];
+        return updatedData;
+      });
+    } catch (error) {
+      console.log("GET experience: ", error);
+    }
+  };
+  const getUserInfo = async () => {
+    try {
+      const { data } = await customAxios.get("/admin/member", {
+        params: { loginId: loginId },
+      });
+      setName(data.name);
+      setEmployNumber(data.employeeNumber);
+      setDepartment(data.department);
+      setJobGroup(data.jobGroup);
+    } catch (error) {
+      console.log("Post user: ", error);
+    }
+  };
+
+  useEffect(() => {
+    allData.sort((a, b) => {
+      // 날짜가 null인 경우를 처리
+      const dateA = a.assignedDate
+        ? new Date(a.assignedDate)
+        : new Date("2024-01-01");
+      const dateB = b.assignedDate
+        ? new Date(b.assignedDate)
+        : new Date("2024-01-01");
+
+      return dateA - dateB;
+    });
+    console.log(allData);
+  }, [allData]);
 
   return (
     <main className="MainContent">
@@ -45,17 +126,21 @@ const MainContent = () => {
             className="Search-input"
             type="text"
             placeholder="아이디로 사원 조회"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
           />
           <button className="Search-button" onClick={handleSearch}>
             🔍
           </button>
         </div>
         <span className="Search-label">이름</span>
+        <span className="Search-label">{name}</span>
         <span className="Search-label">소속</span>
+        <span className="Search-label">{department}</span>
         <span className="Search-label">직무그룹</span>
+        <span className="Search-label">{jobGroup}</span>
         <span className="Search-label">사번</span>
+        <span className="Search-label">{employeeNumber}</span>
       </div>
       {/* button */}
       <div style={styles.buttonContainer}>
@@ -101,44 +186,55 @@ const MainContent = () => {
         <span className="Content-header-label">완료 여부</span>
       </div>
       {/* content */}
-      <div style={{ display: "flex", width: "100%", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          flexDirection: "column",
+          height: 400,
+          overflow: "hidden",
+        }}
+      >
         {/* 퀘스트/경험치 추가 */}
         {addRowVisible &&
           (addRowVisible === "quest" ? (
-            <AddContentRow type="quest" setAddRowVisible={setAddRowVisible} />
+            <AddContentRow
+              loginId={loginId}
+              type="quest"
+              setAddRowVisible={setAddRowVisible}
+            />
           ) : addRowVisible === "experience" ? (
             <AddContentRow
+              loginId={loginId}
               type="experience"
               setAddRowVisible={setAddRowVisible}
             />
           ) : null)}
-        {/* 미완료 퀘스트 */}
-        <NormalContentRow
-          setAchieveModalVisible={setAchieveModalVisible}
-          achieveModalVisible={achieveModalVisible}
-          selectedAchievement={selectedAchievement}
-          setButtonPosition={setButtonPosition}
-          isComplete={false}
-          type="quest"
-        />
-        {/* 완료 퀘스트 */}
-        <NormalContentRow
-          setAchieveModalVisible={setAchieveModalVisible}
-          achieveModalVisible={achieveModalVisible}
-          selectedAchievement={selectedAchievement}
-          setButtonPosition={setButtonPosition}
-          isComplete={true}
-          type="quest"
-        />
-        {/* 경험치 */}
-        <NormalContentRow
-          setAchieveModalVisible={setAchieveModalVisible}
-          achieveModalVisible={achieveModalVisible}
-          selectedAchievement={selectedAchievement}
-          setButtonPosition={setButtonPosition}
-          isComplete={true}
-          type="exp"
-        />
+        {allData.map((data, index) => {
+          return (
+            <NormalContentRow
+              setAchieveModalVisible={setAchieveModalVisible}
+              achieveModalVisible={achieveModalVisible}
+              selectedAchievement={selectedAchievement}
+              setButtonPosition={setButtonPosition}
+              type={
+                data.type === "PERFORMANCE_EVALUATION" ||
+                data.type === "CORPORATE_PROJECT"
+                  ? "exp"
+                  : "quest"
+              }
+              detailType={data.type}
+              title={data.title}
+              description={data.description}
+              isComplete={data.completed}
+              date={data.date}
+              experience={data.experience}
+              progress={data.progress}
+              assignedDate={data.assignedDate}
+              memberQuestId={data.memberQuestId ? data.memberQuestId : ""}
+            />
+          );
+        })}
       </div>
       <div className="Pagination">
         <button>이전</button>
