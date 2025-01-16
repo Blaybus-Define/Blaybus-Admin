@@ -1,11 +1,12 @@
 import React from 'react';
-import DoHandsLogo from '../images/DoHands.png'; 
+import '../App.css';
+import DoHandsLogo from '../images/DoHands.png'; // 로컬 이미지 사용
 
 const Header = () => {
   return (
     <header className="Header">
       <img
-        src={DoHandsLogo} 
+        src={DoHandsLogo}
         alt="DOHANDS"
         className="Header-logo"
       />
