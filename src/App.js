@@ -6,6 +6,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen";
 import { Toaster } from "react-hot-toast";
 import { customAxios, setupInterceptors } from "./customAxios";
+import NewMain from "./components/NewMain";
 
 function App() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function App() {
           element={
             <div className="App">
               <Header />
-              <MainContent />
+              <NewMain />
             </div>
           }
         />
